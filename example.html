@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>Document Style Sheets Operation</title>
+		
+		<script type="text/javascript" src="docStyle.js"></script>
+	</head>
+
+	<body onload="init()">
+		<p id="title">外联样式表操作库</p>
+		<p id="subtitle">Document Style Sheets Operation</p>
+		
+		<div id="person"></div>
+		
+		<div id="details">
+			这是一个JS的外联样式表操作库，可以动态增删、修改CSS3的keyframes的值（您可以打开开发者工具或者查看源码，文档内没有引用任何CSS文件，并且页面元素不含有任何内联样式）。基于MIT协议开源。<br /><hr />
+			This is a JavaScript library for the document style sheets operation, especially for the CSS3 keyframes, you can add, remove and change it dynamic(MT:You can open the developer tools or view the source, without reference to any CSS file in the document, and the page element does not contain any inline styles.). Present by Thomas, released under the MIT license.(I'm not good at English, sorry about the mistake in these sentence.)
+		</div>
+		
+		<div class="board">
+		@keyframes test {<br />&nbsp;&nbsp;&nbsp;&nbsp;
+			0% { top: 200px; left: 200px; }<br />&nbsp;&nbsp;&nbsp;&nbsp;
+			100% {<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				top: <span id="y">0px</span>;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				left: <span id="x">0px</span>;<br />&nbsp;&nbsp;&nbsp;&nbsp;
+			}<br />
+		}
+		</div>
+		
+		<div id="button" onclick="runAnimate();">执行动画<br />Run Animate</div>
+		
+		<script>
+			function init(){
+				docStyle.addStyle("body, html");
+				docStyle.setStyle("body, html","margin","0px");
+				docStyle.setStyle("BODY,HTML","width","100%");
+				docStyle.setStyle("BODY,HTML","height","100%");
+				docStyle.setStyle("BODY,HTML","overflow","hidden");
+				docStyle.setStyle("BODY,HTML","background","url(img/web.png)");
+				docStyle.setStyle("BODY,HTML","color","#333333");
+				
+				docStyle.addStyle("#title");
+				docStyle.setStyle("#title","fontSize","32px");
+				docStyle.setStyle("#title","lineHeight","12px");
+				docStyle.setStyle("#title","marginLeft","24px");
+				docStyle.setStyle("#title","marginTop","48px");
+				docStyle.addStyle("#subtitle");
+				docStyle.setStyle("#subtitle","fontSize","18.8px");
+				docStyle.setStyle("#subtitle","marginLeft","24px");
+				
+				docStyle.addStyle("#details");
+				docStyle.setStyle("#details","position","fixed");
+				docStyle.setStyle("#details","left","24px");
+				docStyle.setStyle("#details","bottom","24px");
+				docStyle.setStyle("#details","width","400px");
+				docStyle.setStyle("#details","textAlign","justify");
+				docStyle.setStyle("#details","padding","16px");
+				docStyle.setStyle("#details","fontSize","12px");
+				docStyle.setStyle("#details","background","rgba(33,33,33,0.56)");
+				docStyle.setStyle("#details","color","#FFFFFF");
+				docStyle.setStyle("#details","borderRadius","4px");
+				
+				docStyle.addStyle(".board");
+				docStyle.setStyle(".board","position","fixed");
+				docStyle.setStyle(".board","right","24px");
+				docStyle.setStyle(".board","bottom","24px");
+				docStyle.setStyle(".board","width","300px");
+				docStyle.setStyle(".board","height","135px");
+				docStyle.setStyle(".board","padding","16px");
+				docStyle.setStyle(".board","background","#FFFFFF");
+				docStyle.setStyle(".board","color","#212121");
+				docStyle.setStyle(".board","borderRadius","4px");
+				docStyle.setStyle(".board","boxShadow","rgba(33,33,33,0.24) 0px 0px 12px");
+				
+				docStyle.addStyle("#x");
+				docStyle.setStyle("#x","color","#FF0033");
+				docStyle.addStyle("#y");
+				docStyle.setStyle("#y","color","#FF0033");
+				
+				docStyle.addStyle("#button");
+				docStyle.setStyle("#button","position","fixed");
+				docStyle.setStyle("#button","color","#FFFFFF");
+				docStyle.setStyle("#button","borderRadius","4px");
+				docStyle.setStyle("#button","right","32px");
+				docStyle.setStyle("#button","bottom","32px");
+				docStyle.setStyle("#button","width","100px");
+				docStyle.setStyle("#button","padding","8px");
+				docStyle.setStyle("#button","textAlign","center");
+				docStyle.setStyle("#button","background","#00ACC1");
+				docStyle.setStyle("#button","cursor","pointer");
+				
+				docStyle.addStyle("#button:hover");
+				docStyle.setStyle("#button:hover","background","#00BCD4");
+				
+				docStyle.addStyle("#person");
+				docStyle.setStyle("#person","position","fixed");
+				docStyle.setStyle("#person","top","200px");
+				docStyle.setStyle("#person","left","200px");
+				docStyle.setStyle("#person","width","100px");
+				docStyle.setStyle("#person","height","100px");
+				docStyle.setStyle("#person","background","#00BCD4");
+				docStyle.setStyle("#person","borderRadius","50px");
+				
+				docStyle.addStyle(".animate");
+				docStyle.setStyle(".animate","animation","duang 1s");
+				
+				docStyle.addKeyFrames("duang");
+				docStyle.setKeyFrames("duang","0%","left","200px");
+				docStyle.setKeyFrames("duang","0%","top","200px");
+			}
+			
+			function runAnimate(){
+				var x = Math.floor(document.body.clientWidth*Math.random())+"px";
+				var y = Math.floor(document.body.clientHeight*Math.random())+"px";
+				
+				document.getElementById("x").innerHTML = x;
+				document.getElementById("y").innerHTML = y;
+				
+				docStyle.setKeyFrames("duang","100%","left",x);
+				docStyle.setKeyFrames("duang","100%","top",y);
+				
+				document.getElementById("person").className = ""
+				document.getElementById("person").className = "animate";
+				
+				setTimeout(function(){document.getElementById("person").className = ""},1000);
+			}
+		</script>
+	</body>
+
+</html>
