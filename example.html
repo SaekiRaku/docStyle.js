@@ -6,6 +6,12 @@
 		<title>Document Style Sheets Operation</title>
 		
 		<script type="text/javascript" src="docStyle.js"></script>
+		
+		<!--
+			此处没有CSS样式表
+        	No <style> here.
+        -->
+        
 	</head>
 
 	<body onload="init()">
@@ -16,7 +22,7 @@
 		
 		<div id="details">
 			这是一个JS的外联样式表操作库，可以动态增删、修改CSS3的keyframes的值（您可以打开开发者工具或者查看源码，文档内没有引用任何CSS文件，并且页面元素不含有任何内联样式）。基于MIT协议开源。<br /><hr />
-			This is a JavaScript library for the document style sheets operation, especially for the CSS3 keyframes, you can add, remove and change it dynamic(MT:You can open the developer tools or view the source, without reference to any CSS file in the document, and the page element does not contain any inline styles.). Present by Thomas, released under the MIT license.(I'm not good at English, sorry about the mistake in these sentence.)
+			This is a JavaScript library for the document style sheets operation, especially for the CSS3 keyframes. You can add, remove and change it dynamic(PS:You can open the developer tools or view the source, without reference to any CSS file in the document, and the page element does not contain any inline styles.). Present by Thomas, released under the MIT license.(I'm not good at English, sorry about the mistake in these sentence.)
 		</div>
 		
 		<div class="board">
@@ -32,6 +38,8 @@
 		<div id="button" onclick="runAnimate();">执行动画<br />Run Animate</div>
 		
 		<script>
+			var runing = false;
+		
 			function init(){
 				docStyle.addStyle("body, html");
 				docStyle.setStyle("body, html","margin","0px");
@@ -103,15 +111,20 @@
 				docStyle.setStyle("#person","background","#00BCD4");
 				docStyle.setStyle("#person","borderRadius","50px");
 				
-				docStyle.addStyle(".animate");
-				docStyle.setStyle(".animate","animation","duang 1s");
-				
 				docStyle.addKeyFrames("duang");
 				docStyle.setKeyFrames("duang","0%","left","200px");
 				docStyle.setKeyFrames("duang","0%","top","200px");
 			}
 			
 			function runAnimate(){
+				if(runing){
+					return;
+				}
+				runing = true;
+				
+				docStyle.setStyle("#button","background","#333333");
+				docStyle.setStyle("#button:hover","background","#333333");
+				
 				var x = Math.floor(document.body.clientWidth*Math.random())+"px";
 				var y = Math.floor(document.body.clientHeight*Math.random())+"px";
 				
@@ -121,10 +134,14 @@
 				docStyle.setKeyFrames("duang","100%","left",x);
 				docStyle.setKeyFrames("duang","100%","top",y);
 				
-				document.getElementById("person").className = ""
-				document.getElementById("person").className = "animate";
+				docStyle.useKeyFrames("person","test","duang","1500ms");
 				
-				setTimeout(function(){document.getElementById("person").className = ""},1000);
+				setTimeout(function(){
+					docStyle.cancelKeyFrames("person","test")
+					docStyle.setStyle("#button","background","#00ACC1");
+					docStyle.setStyle("#button:hover","background","#00BCD4");
+					runing = false;
+				},1500);
 			}
 		</script>
 	</body>

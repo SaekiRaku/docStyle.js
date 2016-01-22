@@ -49,13 +49,42 @@ var docStyle = (function() {
 		}
 		return css;
 	}
+	
+	function getPrefix(){
+		if(typeof CSSKeyframesRule!="undefined"){
+			return "";
+		}else if(typeof MozCSSKeyframesRule!="undefined"){
+			return "-moz-";
+		}else if(typeof WebKitCSSKeyframesRule!="undefined"){
+			return "-webkit-";
+		}else{
+			return "-o-";
+		}
+	}
 
 	var duang = {
+		hasSelector: function(selector){
+			if(find(selector)==undefined){
+				return false;
+			}else{
+				return true;
+			}
+		},
 		setStyle: function(selector,style,value){
 			find(selector).style[style] = value;
 		},
 		getStyle: function(selector,style){
 			return find(selector).style[style];
+		},
+		hasStyle: function(selector,style){
+			if(this.hasSelector(selector)==false){
+				return false;
+			}
+			if(find(selector).style[style]==""){
+				return false;
+			}else {
+				return true;
+			}
 		},
 		setKeyFrames: function(name,percent,style,value){
 			var obj = find(name);
@@ -81,6 +110,13 @@ var docStyle = (function() {
 			}
 			return null;
 		},
+		hasKeyFrames: function(name){
+			if(find(name)==-1){
+				return false;
+			}else {
+				return true;
+			}
+		},
 		addStyle: function(selector){
 			if(!document.styleSheets || !document.styleSheets.length){
 				var style = document.createElement("style");
@@ -101,16 +137,9 @@ var docStyle = (function() {
 		},
 		addKeyFrames: function(name){
 			var style = document.createElement("style");
-			
-			if(typeof CSSKeyframesRule!="undefined"){
-				style.innerHTML = "@keyframes "+name+" {}";
-			}else if(typeof MozCSSKeyframesRule!="undefined"){
-				style.innerHTML = "@-moz-keyframes "+name+" {}";
-			}else if(typeof WebKitCSSKeyframesRule!="undefined"){
-				style.innerHTML = "@-webkit-keyframes "+name+" {}";
-			}else{
-				style.innerHTML = "@-o-keyframes "+name+" {}";
-			}
+
+			style.innerHTML = "@"+getPrefix()+"keyframes "+name+" {}";
+
 			document.head.appendChild(style);
 		},
 		removeKeyFrames: function(name){
@@ -123,6 +152,34 @@ var docStyle = (function() {
 			}else{
 				document.styleSheets[index].removeRule(0);
 			}
+		},
+		useKeyFrames: function(id, className, keyFramesName, time, other){
+			var temp = keyFramesName+" "+time;
+			if(other!=undefined){
+				temp += " "+other;
+			}
+			 
+			if(this.hasSelector("."+className)==false){
+				this.addStyle("."+className);
+			}
+			
+			this.setStyle("."+className,getPrefix()+"animation",temp);
+			
+			this.cancelKeyFrames(id, className);
+			
+			if(document.getElementById(id).className==""){
+				document.getElementById(id).className = className;
+			}else{
+				document.getElementById(id).className += " "+className;
+			}
+			
+			console.log(document.getElementById(id).className);
+			
+		},
+		cancelKeyFrames: function(id, className){
+			var temp = document.getElementById(id).className;
+			var reg = "/"+className+"\s?/g"
+			document.getElementById(id).className = temp.replace(eval(reg),"");
 		}
 	};
 
